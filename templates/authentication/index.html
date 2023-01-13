@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication</title>
+</head>
+<body>
+    <h3>Welcome to our Revision App</h3>
+
+    <!--To display the success error messages we need to mention the following: -->
+    {% for message in messages %}
+    <div class = "alert alert-{{ message.tags }} alert-dismissible fade show" role = "alert">
+        <strong>Message: </strong> {{ message }}
+        <button type = "button" class = "close" data-dismiss = "alert" aria-labe = "Close">
+        <span aria-hidden="true ">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+
+    <!-- Mentioning the logged in user's firsname that is supplied by the signin view function in view.py file-->
+    <!--if the user is authenticated then display the following things -->
+    {% if user.is_authenticated %}
+    <h3>Hello {{ fname }}</h3><!--Passing in the first name of user using the key from the dictionary in the signin view function-->
+    <h4>You are successfully logged in.</h4>
+    <!--we need to give these buttons the urls of the functions that are written for them-->
+    <button type = "submit"><a href="/signout"> SignOut </a></button><!--The user is only shown the SignOut button if they are logged in!-->
+
+    <!--else case (when the user is not authenticated): show the SignUp and SignIn button to the user-->
+    {% else %}
+    <!--we need to give these buttons the urls of the functions that are written for them-->
+    <button type = "submit"><a href="/signup"> SignUp </a></button>
+    <button type = "submit"><a href="/signin"> SignIn </a></button>
+    {% endif %}
+</body>
+</html>
