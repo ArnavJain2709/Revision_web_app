@@ -9,8 +9,17 @@ from django.shortcuts import redirect, render
 # login and logout is also imported for the login and logout operations
 from django.contrib.auth import authenticate, login, logout
 # for emails:
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage, send_mail
 from Revision_web_app import settings
+# used for getting the current url of where the site is hosted e.g. localhost
+from django.contrib.sites.shortcuts import get_current_site
+# for rendering templates inside an email:
+from django.template.loader import render_to_string
+# for decoding and encoding unique tokens:
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text
+# for generating tokens:
+from .tokens import generate_token
 
 
 # Create your views here.
@@ -59,6 +68,7 @@ def signup(request):
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name = fname  # passing in the user's first name
         myuser.last_name = lname  # passing in the user's last name
+        myuser.is_active = False  # makes sure that the user account is deactivated
 
         # saving this user in the database
         myuser.save()
@@ -73,6 +83,27 @@ def signup(request):
         to_list = [myuser.email]
         # fail_silently prevents our website from crashing if there's an error in sending the email
         send_mail(subject, message, from_email, to_list, fail_silently=True)
+
+        # Email Address Confirmation Email
+        # "current_site" gets the domain of where our website is deployed e.g. localhost
+        current_site = get_current_site(request)
+        email_subject = "Confirm your email @ Revsision Website Login!!"
+        message2 = render_to_string('email_confirmation.html', {
+            'name': myuser.first_name,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
+            'token': generate_token.make_token(myuser),
+        })
+        # creating the email object
+        email = EmailMessage(
+            email_subject,
+            message2,
+            settings.EMAIL_HOST_USER,
+            [myuser.email],
+        )
+        # if email fails:
+        email.fail_silently = True
+        email.send()
 
         # after the user has registerred he/she should be directed to the login page
         return redirect('signin')
@@ -106,6 +137,26 @@ def signin(request):
 
 
 def signout(request):
-    logout(request)  # logs out the current user which has requested for the url
-    messages.success(request, "Logged Out Successfully!")
+    logout(request)
+    messages.success(request, "Logged Out Successfully!!")
     return redirect('home')
+
+# making a function to activate the account of the user:
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        myuser = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        myuser = None
+
+    if myuser is not None and generate_token.check_token(myuser, token):
+        myuser.is_active = True
+        # user.profile.signup_confirmation = True
+        myuser.save()
+        login(request, myuser)
+        messages.success(request, "Your Account has been activated!!")
+        return redirect('signin')
+    else:
+        return render(request, 'activation_failed.html')
