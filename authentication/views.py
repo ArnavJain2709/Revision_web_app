@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-# this library will be used for displaying messages to the user when the have signedup
+# this library will be used for displaying messages to the user when the has signed up
 from django.contrib import messages
 # this library will allow us to redirect the user to the login page after they have registered
 from django.shortcuts import redirect, render
