@@ -121,7 +121,8 @@ def signin(request):
 
         user = authenticate(username=username, password=pass1)
 
-        if user is not None:  # this will return a None response if the user is not authenticated and a non None response if the user has enterred the right credentials
+        if user is not None:  # this will return a None response if the user is not authenticated and
+            # a non None response if the user has enterred the right credentials
             # if the user's credentials are already in our database then we will login
             login(request, user)
             fname = user.first_name  # defining fname

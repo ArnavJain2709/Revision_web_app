@@ -1,11 +1,7 @@
-{% autoescape off %}
-
-Welcome to Revision Website Login 
-
-Hello {{ name }}<!--'name' is the variable that is used to store the username of the user, can be found in the view.py file in the dictionary defined around line 91-->
+{% autoescape off %} Welcome to Revision Website Login Hello {{ name }}<!--'name' is the variable that is used to store the username of the user and can be found in the view.py file in the dictionary defined around line 91-->
 
 Please confirm your email by clicking on the following link.<!--All the variables in the line below can be found in the same place as 'name' ^ -->
-Confirmation Link: http://{{ domain }}{% url 'activate' uidb64=uid token=token %}<!--uid will check if the token is for the particular user or not and token will generate the token-->
-
+Confirmation Link: http://{{ domain }}{% url 'activate' uidb64=uid token=token
+%}<!--uid will check if the token is for the particular user or not and token will generate the token-->
 
 {% endautoescape %}
