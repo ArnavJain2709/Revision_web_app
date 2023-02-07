@@ -1,39 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
     <title>Authentication</title>
-</head>
-<body>
+  </head>
+  <body>
     <h3>Welcome to our Revision App</h3>
 
     <!--To display the success error messages we need to mention the following: -->
     {% if messages %}
     <ul class="alert alert-danger alert-dismissible fade show" role="alert">
-        {% for message in messages %}
-            <li>{{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </li>
-    {% endfor %}
-</ul>
-{% endif %}
+      {% for message in messages %}
+      <li>
+        {{ message }}
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
-<script>
-$(document).ready(function () {
-    $(".close").click(function () {
-        $(this).closest(".alert").alert("close");
-    });
-});
-</script>
-<!--
+    <script>
+      $(document).ready(function () {
+        $(".close").click(function () {
+          $(this).closest(".alert").alert("close");
+        });
+      });
+    </script>
+    <!--
     {% for message in messages %}
     <div class = "alert alert-{{ message.tags }} alert-dismissible fade show" role = "alert">
         <strong>Message: </strong> {{ message }}
@@ -47,19 +70,21 @@ $(document).ready(function () {
     <!-- Mentioning the logged in user's firsname that is supplied by the signin view function in view.py file-->
     <!--if the user is authenticated then display the following things -->
     {% if user.is_authenticated %}
-    <h3>Hello {{ fname }}</h3><!--Passing in the first name of user using the key from the dictionary in the signin view function-->
+    <h3>Hello {{ fname }}</h3>
+    <!--Passing in the first name of user using the key from the dictionary in the signin view function-->
     <h4>You are successfully logged in.</h4>
     <!--we need to give these buttons the urls of the functions that are written for them-->
-    <button id = "quizzes" type = "submit"><a href="/"
-    <button id = "signout" type = "submit"><a href="/signout"> SignOut </a></button><!--The user is only shown the SignOut button if they are logged in!-->
-    
-    
+    <button id="quizzes" type="submit">
+      <a href="/quizzes">Quizzes</a>
+    </button>
+    <button id="signout" type="submit"><a href="/signout"> SignOut </a></button
+    ><!--The user is only shown the SignOut button if they are logged in!-->
 
     <!--else case (when the user is not authenticated): show the SignUp and SignIn button to the user-->
     {% else %}
     <!--we need to give these buttons the urls of the functions that are written for them-->
-    <button type = "submit"><a href="/signup"> SignUp </a></button>
-    <button type = "submit"><a href="/signin"> SignIn </a></button>
+    <button type="submit"><a href="/signup"> SignUp </a></button>
+    <button type="submit"><a href="/signin"> SignIn </a></button>
     {% endif %}
-</body>
+  </body>
 </html>
