@@ -17,3 +17,9 @@ def index(request):
     else:
         messages.error(request, "Please Login / Register!")
         return redirect('home')
+
+
+# creating a view function for computer science quizzes
+def computerScience(request):
+    fname = request.user.first_name
+    return HttpResponse(request, "Hello {}", {'fname': fname})
