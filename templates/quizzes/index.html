@@ -5,11 +5,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quizzes</title>
+
+    <style>
+      body {
+        background-color: #17233d;
+      }
+
+      #welcomeSection {
+        background-color: #333333;
+        padding: 20px; /* Add 20 pixels of padding on all sides of the div */
+        border-radius: 10px; /* Add a 10 pixel border radius to the div */
+      }
+
+      #welcomeSection h3,
+      #welcomeSection h4 {
+        color: white;
+        margin: 0; /* Remove any margin that may be added by default */
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: row;
+      }
+
+      .container button {
+        margin: 10px;
+        background-color: #5ce1e6;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #7ed957;
+      }
+
+      .container button a {
+        text-decoration: none;
+      }
+    </style>
   </head>
   <body>
-    <h3>Hello {{ username }}</h3>
-    <!--Passing in the first name of user using the key from the dictionary in the signin view function-->
-    <h4>This is the quizz section.</h4>
-    <button><a href="/computerScience">Computer Science</a></button>
+    <div id="welcomeSection">
+      <h3>Hello {{ username }}</h3>
+      <!--Passing in the first name of user using the key from the dictionary in the signin view function-->
+      <h4>This is the quizz section.</h4>
+    </div>
+    <div class="container">
+      <button id="ComputerScience">
+        <a href="/computerScience">Computer Science</a>
+      </button>
+      <button id="Physics">
+        <a href="/physics">Physics</a>
+      </button>
+      <button id="Economics">
+        <a href="/economics">Economics</a>
+      </button>
+    </div>
   </body>
 </html>
