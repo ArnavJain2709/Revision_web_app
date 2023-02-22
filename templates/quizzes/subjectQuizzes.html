@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% if question_packs %}
+
+    <form method="POST" action="{% url 'quizzes:quizGame' %}">
+      {% csrf_token %} {% for pack in question_packs %}
+
+      <button
+        id="ComputerScience"
+        name="packName"
+        value="{{ pack.pack_name}}"
+        type="submit"
+        onclick="console.log(this.value)"
+      >
+        {{ pack.pack_name }}
+      </button>
+      {% endfor %}
+    </form>
+    {% else %}
+    <p>No question packs found.</p>
+    {% endif %}
+  </body>
+</html>

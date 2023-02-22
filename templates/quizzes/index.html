@@ -57,15 +57,36 @@
       <h4>This is the quizz section.</h4>
     </div>
     <div class="container">
-      <button id="ComputerScience">
-        <a href="/computerScience">Computer Science</a>
-      </button>
-      <button id="Physics">
-        <a href="/physics">Physics</a>
-      </button>
-      <button id="Economics">
-        <a href="/economics">Economics</a>
-      </button>
+      <form method="POST" action="{% url 'quizzes:questionPackDisplay' %}">
+        {% csrf_token %}
+        <button
+          id="ComputerScience"
+          name="subject"
+          value="Computer Science H446"
+          type="submit"
+          onclick="console.log(this.value)"
+        >
+          Computer Science
+        </button>
+        <button
+          id="Physics"
+          name="subject"
+          value="Physics A H556"
+          type="submit"
+          onclick="console.log(this.value)"
+        >
+          Physics
+        </button>
+        <button
+          id="Economics"
+          name="subject"
+          value="Economics 7135, 7136"
+          type="submit"
+          onclick="console.log(this.value)"
+        >
+          Economics
+        </button>
+      </form>
     </div>
   </body>
 </html>
