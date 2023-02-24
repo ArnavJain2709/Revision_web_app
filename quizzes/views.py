@@ -58,12 +58,20 @@ def quizGame(request):
         return render(request, "quizzes/test.html")
 
 
-def submit_quiz(request):
+def submit_quiz(request, pack_id):
     score = 0
+    question_count = Question.objects.filter(pack_id=pack_id).count()
+    # loop that iterates through each key-value pair in the POST data from the quiz.html form
     for key, value in request.POST.items():
+        # checks if the key starts with "question"
         if key.startswith('question'):
+            # Gets the primary key of the Question object from the key
             question_id = key.replace('question', '')
+            # Get the corresoinding Question object from the database
             question = Question.objects.get(pk=question_id)
+            # Checks if the selected answer matches the correct_option in the "question" model
             if int(value) == question.correct_option:
                 score += 1
-    return render(request, 'quizzes/quiz_results.html', {'score': score})
+    score_percentage = (score / question_count) * 100
+    score_percentage = round(score_percentage, 1)
+    return render(request, 'quizzes/quiz_results.html', {'score_percentage': score_percentage})
