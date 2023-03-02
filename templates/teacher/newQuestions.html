@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Question</title>
+  </head>
+  <body>
+    <h1>Hello {{ teacher }}</h1>
+    <h1>This is where the admin can create a new question</h1>
+
+    <!--Creating a form for the admin / teacher to fill in the details of the new question-->
+    <form method="post">
+      {% csrf_token %}
+      <label for="question_text">Question Text:</label><br />
+      <textarea id="question_text" name="question_text"></textarea><br />
+      <label for="pack">Pack:</label><br />
+      <select id="pack" name="pack">
+        {% for pack in packs %}
+        <option value="{{ pack.pk }}">{{ pack.pack_name }}</option>
+        {% endfor %}</select
+      ><br />
+      <label for="option_1">Option 1:</label><br />
+      <input type="text" id="option_1" name="option_1" /><br />
+      <label for="option_2">Option 2:</label><br />
+      <input type="text" id="option_2" name="option_2" /><br />
+      <label for="option_3">Option 3:</label><br />
+      <input type="text" id="option_3" name="option_3" /><br />
+      <label for="option_4">Option 4:</label><br />
+      <input type="text" id="option_4" name="option_4" /><br />
+      <label for="correct_option">Correct Option:</label><br />
+      <input
+        type="number"
+        id="correct_option"
+        name="correct_option"
+        min="1"
+        max="4"
+      /><br />
+      <br />
+      <input type="submit" value="Create Question" />
+    </form>
+    This form includes fields for question_text, pack, option_1, option_2,
+    option_3, option_4, and correct_option. The pack field is a select box that
+    contains all the QuestionPack objects. When the user submits the form, the
+    data is sent as a POST request to the createQuestion view function.
+  </body>
+</html>

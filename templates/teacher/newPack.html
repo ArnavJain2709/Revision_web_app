@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Question Packs</title>
+  </head>
+  <body>
+    <h1>Hello {{ teacher }}</h1>
+    <h1>This is where the admin can create new question packs</h1>
+
+    <!--Creating a form for the admin / teacher to fill in the details of the new question pack-->
+    <form method="post">
+      {% csrf_token %}
+      <label for="pack_name">Pack Name:</label><br />
+      <input type="text" id="pack_name" name="pack_name" /><br />
+      <label for="pack_description">Pack Description:</label><br />
+      <textarea id="pack_description" name="pack_description"></textarea><br />
+      <label for="subject">Subject:</label><br />
+      <select id="subject" name="subject">
+        {% for subject in subjects %}
+        <option value="{{ subject.pk }}">{{ subject.subject_name }}</option>
+        {% endfor %}
+      </select>
+      <br />
+      <br />
+      <input type="submit" value="Create Pack" />
+    </form>
+    This form includes fields for pack_name, pack_description, and subject. The
+    subject field is a select box that contains all the QuizSubject objects.
+    When the user submits the form, the data is sent as a POST request to the
+    createQuestionPack view function.
+  </body>
+</html>

@@ -80,6 +80,16 @@
     <button id="signout" type="submit"><a href="/signout"> SignOut </a></button
     ><!--The user is only shown the SignOut button if they are logged in!-->
 
+    <!--The button below will take admin users / teachers to another template where they can view statistics of a user / student-->
+    <button id="teacher" type="submit">
+      <a href="/teacher">For Teachers</a>
+    </button>
+
+    <!--Creating a button that will take the user to the flashcards app-->
+    <button id="flashcard" type="submit">
+      <a href="/flashcard">Flashcards</a>
+    </button>
+
     <!--else case (when the user is not authenticated): show the SignUp and SignIn button to the user-->
     {% else %}
     <!--we need to give these buttons the urls of the functions that are written for them-->

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quizzes</title>
+    <title>Subject Flashcard</title>
 
     <style>
       body {
@@ -57,7 +57,7 @@
       <h4>This is the quizz section.</h4>
     </div>
     <div class="container">
-      <form method="POST" action="{% url 'quizzes:questionPackDisplay' %}">
+      <form method="POST" action="{% url 'flashcard:flashcardPackDisplay' %}">
         {% csrf_token %} {% for subject in subjects %}
         <button
           id="{{ subject.subject_name }}"

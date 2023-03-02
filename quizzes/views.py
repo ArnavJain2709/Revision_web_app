@@ -14,8 +14,13 @@ def index(request):
 
     if request.user.is_authenticated:  # checks if the the current user is logged in
         username = request.user.username
+        subjects = QuizSubject.objects.all()  # using the models from the quizzes app
+        context = {
+            'username': username,
+            'subjects': subjects
+        }
 
-        return render(request, "quizzes/index.html", {'username': username})
+        return render(request, "quizzes/index.html", context)
     else:
         messages.error(request, "Please Login / Register!")
         return redirect('home')
@@ -60,6 +65,12 @@ def quizGame(request):
 
 def submit_quiz(request, pack_id):
     score = 0
+
+    question_count = Question.objects.filter(pack_id=pack_id).count()
+    user = request.user
+    subject = QuestionPack.objects.get(pk=pack_id).subject
+    pack = QuestionPack.objects.get(pk=pack_id)
+
     question_count = Question.objects.filter(pack_id=pack_id).count()
     # loop that iterates through each key-value pair in the POST data from the quiz.html form
     for key, value in request.POST.items():
@@ -74,4 +85,9 @@ def submit_quiz(request, pack_id):
                 score += 1
     score_percentage = (score / question_count) * 100
     score_percentage = round(score_percentage, 1)
+
+    user_performance = UserPerformance(
+        user=user, subject=subject, pack=pack, score_percentage=score_percentage, date=timezone.now())
+    user_performance.save()
+
     return render(request, 'quizzes/quiz_results.html', {'score_percentage': score_percentage})

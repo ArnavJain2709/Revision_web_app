@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+# for timezpne.now() in the UserPerformance model:
+from django.utils import timezone
 
 # Create your models here.
 
@@ -38,8 +40,11 @@ class UserPerformance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.ForeignKey(QuizSubject, on_delete=models.CASCADE)
     pack = models.ForeignKey(QuestionPack, on_delete=models.CASCADE)
-    questions_answered = models.PositiveIntegerField()
-    questions_correct = models.PositiveIntegerField()
+    score_percentage = models.FloatField(
+        default=0.0)  # sets the default value to 0
+    date = models.DateTimeField(default=timezone.now)
 
+    # def __str__(self):
+    #    return self.user
     def __str__(self):
-        return self.user
+        return f"{self.user.username} - {self.pack.pack_name} - {self.score_percentage}"
