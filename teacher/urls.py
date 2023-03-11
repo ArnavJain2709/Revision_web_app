@@ -8,5 +8,6 @@ urlpatterns = [
     path('createQuestionPack/', views.createQuestionPack,
          name='createQuestionPack'),
     path('addQuestions/', views.addQuestions, name='addQuestions'),
+    path('addFlashCard/', views.addFlashCard, name='addFlashCard'),
     path('userDashboard/', views.userDashboard, name='userDashboard'),
 ]

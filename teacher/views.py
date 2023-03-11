@@ -87,11 +87,50 @@ def addQuestions(request):
 
             new_question.save()  # saving the new object to Question model
             messages.success(
-                request, "New question has just been added to the pack called", pack_name, "has just been created.")
+                request, "New question has just been has just been created.")
             return render(request, 'teacher/index.html')
         else:
             return render(request, 'teacher/newQuestions.html', context)
         return render(request, 'teacher/newQuestions.html', context)
+    else:
+        messages.error(
+            request, "You do not have permission to view this page!")
+        return redirect('home')
+
+
+def addFlashCard(request):
+    if request.user.is_superuser:
+        teacher = request.user.username
+        packs = QuestionPack.objects.all()  # get all subjects from database
+        context = {
+            'teacher': teacher,
+            'packs': packs
+        }
+        # code for handling the form data that
+        # will be used to create a new Question model object
+        # so that a new Question can be created
+        if request.method == 'POST':
+            prompts = request.POST.get('prompts')
+            pack_id = request.POST.get('pack')
+            content = request.POST.get('content')
+            question_pack = QuestionPack.objects.get(pk=pack_id)
+            subject = question_pack.subject
+
+            # pack_name = question_pack.pack_name
+
+            # creating a new QuestionPack model object:
+            new_flashcard = Card(
+                prompts=prompts,
+                question_pack=question_pack,
+                content=content,
+                subject=subject)
+            new_flashcard.save()  # saving the new object to Question model
+            messages.success(
+                request, "New flashcard has just been has just been created.")
+            return render(request, 'teacher/index.html')
+        else:
+            return render(request, 'teacher/newFlashCard.html', context)
+        return render(request, 'teacher/newFlashcard.html', context)
     else:
         messages.error(
             request, "You do not have permission to view this page!")
