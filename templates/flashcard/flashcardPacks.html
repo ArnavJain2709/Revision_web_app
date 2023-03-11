@@ -9,11 +9,11 @@
   <body>
     {% if question_packs %}
 
-    <form method="POST" action="{% url 'quizzes:quizGame' %}">
+    <form method="POST" action="{% url 'flashcard:flashcardDisplay' %}">
       {% csrf_token %} {% for pack in question_packs %}
 
       <button
-        id="ComputerScience"
+        id="{{ pack.subject }}"
         name="packName"
         value="{{ pack.pack_name}}"
         type="submit"

@@ -48,3 +48,13 @@ class UserPerformance(models.Model):
     #    return self.user
     def __str__(self):
         return f"{self.user.username} - {self.pack.pack_name} - {self.score_percentage}"
+
+
+class Card(models.Model):
+    prompts = models.CharField(max_length=100)
+    content = models.TextField()
+    subject = models.ForeignKey(QuizSubject, on_delete=models.CASCADE)
+    question_pack = models.ForeignKey(QuestionPack, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.prompts

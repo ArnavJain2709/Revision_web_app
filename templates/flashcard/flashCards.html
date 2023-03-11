@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      table {
+        border-collapse: collapse;
+        margin: 0 auto;
+        padding: 0;
+      }
+      td {
+        display: inline-block;
+        vertical-align: top;
+        width: 300px;
+        margin: 10px;
+      }
+      .flip-card {
+        background-color: transparent;
+        width: 300px;
+        height: 300px;
+        perspective: 1000px;
+      }
+
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+
+      .flip-card-front {
+        background-color: #bbb;
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .flip-card-back {
+        background-color: #2980b9;
+        color: white;
+        transform: rotateY(180deg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+    <title>Flash Cards</title>
+  </head>
+  <body>
+    <h1>This is the flashcards page!</h1>
+    <table>
+      {% for card in flashcards %} {% if forloop.counter0|divisibleby:5 %}
+      <tr>
+        {% endif %}
+        <td>
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <p>{{ card.prompts }}</p>
+              </div>
+              <div class="flip-card-back">
+                <p>{{ card.content }}</p>
+              </div>
+            </div>
+          </div>
+        </td>
+        {% if forloop.counter|divisibleby:5 or forloop.last %}
+      </tr>
+      {% endif %} {% endfor %}
+    </table>
+  </body>
+</html>

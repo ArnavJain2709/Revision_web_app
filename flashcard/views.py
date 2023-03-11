@@ -36,13 +36,42 @@ def flashcardPackDisplay(request):
             # Filtering the QuestionPack table for records with the corresponding QuizSubject
             question_packs = QuestionPack.objects.filter(subject=quiz_subject)
             # passing the list of question packs as context so that they can be shown on the test.html page
-            return render(request, "quizzes/subjectQuizzes.html", {"question_packs": question_packs})
+            return render(request, "flashcard/flashcardPacks.html", {"question_packs": question_packs})
         else:
-            # Render the template without any information
-            return render(request, "quizzes/test.html")
+            # Redirecting to the home template without any information
+            messages.error(
+                request, "There has been an error in the POST request, please try again!")
+            # "return redirect('home')" redirects the user to the home route defined in the urls.py file of the main app called Revision_web_app
+            return redirect('home')
 
     else:
         messages.error(
             request, "You do not have permission to view this page!")
+        # "return redirect('home')" redirects the user to the home route defined in the urls.py file of the main app called Revision_web_app
+        return redirect('home')
+
+
+def flashcardDisplay(request):
+    if request.user.is_authenticated:
+
+        if request.method == "POST":
+            # Determining the flashcard pack chosen by the user
+            questionPackName = request.POST.get("packName")
+            question_pack = QuestionPack.objects.get(
+                pack_name=questionPackName)
+            flashcards = Card.objects.filter(question_pack=question_pack)
+
+            # for debugging purposes
+            # print("The selected subject is: ", question_pack)
+
+            # code for rendering the flashcards on the
+            context = {
+                'flashcards': flashcards,
+            }
+            return render(request, "flashcard/flashCards.html", context)
+
+    else:
+        messages.error(
+            request, "You need to login!")
         # "return redirect('home')" redirects the user to the home route defined in the urls.py file of the main app called Revision_web_app
         return redirect('home')
