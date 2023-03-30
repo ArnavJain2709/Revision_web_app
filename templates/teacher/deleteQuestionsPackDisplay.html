@@ -16,6 +16,9 @@
         }
       };
     </script>
+    
+   
+    <title>Delete Questions</title>
     <style>
       body {
         background-color: #17233d;
@@ -62,36 +65,35 @@
         text-decoration: none;
       }
     </style>
-    <title>Document</title>
   </head>
   <body>
-    {% if question_packs %}
-
     <div id="welcomeSection">
-      <h3>Hello {{ user.username }}</h3>
-      <!--Passing in the first name of user using the key from the dictionary in the signin view function-->
+    <h3>Hello {{ teacher }}</h3>
     </div>
 
-
     <div class="container">
-      <h4>Please select a quiz pack: </h4>
-    <form method="POST" action="{% url 'quizzes:quizGame' %}">
-      {% csrf_token %} {% for pack in question_packs %}
+    <h4>Please select a question pack to delete questions from:</h4>
 
-      <button
-        id="ComputerScience"
-        name="packName"
-        value="{{ pack.pack_name}}"
-        type="submit"
-        onclick="console.log(this.value)"
-      >
-        {{ pack.pack_name }}
-      </button>
-      {% endfor %}
-    </form>
-    {% else %}
-    <p>No question packs found.</p>
-    {% endif %}
-  </div>
+    <!--Creating a form for the admin / teacher to fill in the details of the new question-->
+        {% if packs %}
+
+        <form method="POST" action="{% url 'teacher:deleteQuestionsList' %}">
+          {% csrf_token %} {% for pack in packs %}
+    
+          <button
+            id="{{ pack.subject }}"
+            name="packName"
+            value="{{ pack.pack_name}}"
+            type="submit"
+            onclick="console.log(this.value)"
+          >
+            {{ pack.pack_name }}
+          </button>
+          {% endfor %}
+        </form>
+        {% else %}
+        <p>No question packs found.</p>
+        {% endif %}
+      </div>
   </body>
 </html>

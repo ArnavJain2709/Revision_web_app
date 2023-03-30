@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+      }
+      h2 {
+          color: #333;
+          font-size: 24px;
+      }
+      table {
+          border-collapse: collapse;
+          width: 100%;
+          margin-top: 20px;
+      }
+      th, td {
+          text-align: left;
+          padding: 8px;
+          border-bottom: 1px solid #ddd;
+      }
+      th {
+          background-color: #4CAF50;
+          color: white;
+      }
+      td {
+          background-color: #f2f2f2;
+      }
+      input[type=checkbox] {
+          margin-right: 10px;
+      }
+      button[type=submit] {
+          margin-top: 20px;
+          background-color: #4CAF50;
+          color: white;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+      button[type=submit]:hover {
+          background-color: #45a049;
+      }
+      
+  </style>
+    <title>Question List</title>
+</head>
+<body>
+    <h2>Please the select the questions you want to delete:</h2>
+    <form method="post" action="{% url 'teacher:deleteQuestionExecution' %}">
+      {% csrf_token %}
+      <table>
+        <thead>
+          <tr>
+            <td>Selected</td>
+            <th>Pack</th>
+            <th>Question</th>
+            <th>Option 1</th>
+            <th>Option 2</th>
+            <th>Option 3</th>
+            <th>Option 4</th>
+            <th>Correct Option</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for question in questions %}
+          <tr>
+            <td>
+              <input
+                type="checkbox"
+                name="question"
+                value="{{ question.id }}"
+              />
+            </td>
+            <td>{{ question.pack }}</td>
+            <td>{{ question.question_text }}</td>
+            <td>{{ question.option_1 }}</td>
+            <td>{{ question.option_2 }}</td>
+            <td>{{ question.option_3 }}</td>
+            <td>{{ question.option_4 }}</td>
+            <td>{{ question.correct_option }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button type="submit">Delete selected questions</button>
+    </form>
+</body>
+</html>

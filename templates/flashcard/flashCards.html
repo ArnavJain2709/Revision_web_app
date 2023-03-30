@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
     <style>
       table {
         border-collapse: collapse;
@@ -68,14 +80,15 @@
   <body>
     <h1>This is the flashcards page!</h1>
     <table>
-      {% for card in flashcards %} {% if forloop.counter0|divisibleby:5 %}
-      <tr>
+      {% for card in flashcards %}
+        {% if forloop.counter0|divisibleby:4 %}
+          <tr>
         {% endif %}
         <td>
           <div class="flip-card">
             <div class="flip-card-inner">
               <div class="flip-card-front">
-                <p>{{ card.prompts }}</p>
+                <h3>{{ card.prompts }}</h3>
               </div>
               <div class="flip-card-back">
                 <p>{{ card.content }}</p>
@@ -83,9 +96,10 @@
             </div>
           </div>
         </td>
-        {% if forloop.counter|divisibleby:5 or forloop.last %}
-      </tr>
-      {% endif %} {% endfor %}
+        {% if forloop.counter|divisibleby:4 or forloop.last %}
+          </tr>
+        {% endif %}
+      {% endfor %}
     </table>
   </body>
 </html>

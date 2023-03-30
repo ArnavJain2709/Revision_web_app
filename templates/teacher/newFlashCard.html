@@ -4,6 +4,84 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      /* Add some basic styling to the page */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 28px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      textarea,
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+    <!--Function for validating empty form submission: -->
+    <script>
+      function validateForm() {
+        var pack = document.getElementById("pack").value;
+        var prompts = document.getElementById("prompts").value;
+        var content = document.getElementById("content").value;
+        
+      
+        if (pack == "" || prompts == "" || content == "" ) {
+          alert("Please fill in all required fields.");
+          event.preventDefault(); // Stop form from submitting
+          return false;
+        }
+      }
+    </script>
     <title>New Flashcards</title>
   </head>
   <body>
@@ -11,19 +89,19 @@
     <h1>This is where the admin can create a new flashcard</h1>
 
     <!--Creating a form for the admin / teacher to fill in the details of the new flash card-->
-    <form method="post">
+    <form method="post" novalidate id = "myForm">
       {% csrf_token %}
-      <label for="prompts">Prompt:</label><br />
-      <textarea id="prompts" name="prompts"></textarea><br />
       <label for="pack">Pack:</label><br />
       <select id="pack" name="pack">
         {% for pack in packs %}
         <option value="{{ pack.pk }}">{{ pack.pack_name }}</option>
         {% endfor %}</select
       ><br />
+      <label for="prompts">Prompt:</label><br />
+      <textarea id="prompts" name="prompts"></textarea><br />
       <label for="content">Content:</label><br />
       <textarea id="content" name="content"></textarea><br />
-      <input type="submit" value="Create Flashcard" />
+      <input type="submit" value="Create Flashcard" onclick="validateForm()"/>
     </form>
   </body>
 </html>

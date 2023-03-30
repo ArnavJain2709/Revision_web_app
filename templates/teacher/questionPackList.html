@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+      }
+      
+      h1 {
+        text-align: center;
+        margin-top: 30px;
+      }
+      
+      h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      form {
+        text-align: center;
+      }
+      table {
+        border-collapse: collapse;
+        margin: 20px auto;
+        width: 80%;
+        max-width: 800px;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      th {
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      
+      input[type="checkbox"] {
+        margin: 0 10px 0 0;
+      }
+      
+      button[type="submit"] {
+        margin-top: 20px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+ 
+    <title>Delete Question Packs</title>
+  </head>
+  <body>
+    <h1>This is where you can delete question packs</h1>
+    <h1>Question Packs</h1>
+    <form method="post" action="{% url 'teacher:deleteQuestionPacks' %}">
+      {% csrf_token %}
+      <table>
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Subject</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for question_pack in question_packs %}
+          <tr>
+            <td>
+              <input
+                type="checkbox"
+                name="question_packs"
+                value="{{ question_pack.id }}"
+              />
+            </td>
+            <td>{{ question_pack.pack_name }}</td>
+            <td>{{ question_pack.pack_description }}</td>
+            <td>{{ question_pack.subject }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button type="submit">Delete selected question packs</button>
+    </form>
+  </body>
+</html>

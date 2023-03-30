@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
-    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equip= "Cache-control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <script type="text/javascript">
@@ -32,16 +32,18 @@
         color: white;
         margin: 0; /* Remove any margin that may be added by default */
       }
-
+      h3{
+        color: white;
+      }
+      h4{
+        color: white;
+      }
       .container {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         flex-direction: row;
-      }
-      h4{
-        color: white;
       }
 
       .container button {
@@ -62,36 +64,35 @@
         text-decoration: none;
       }
     </style>
-    <title>Document</title>
+    <title>Delete Flashcard</title>
   </head>
   <body>
-    {% if question_packs %}
-
     <div id="welcomeSection">
-      <h3>Hello {{ user.username }}</h3>
-      <!--Passing in the first name of user using the key from the dictionary in the signin view function-->
-    </div>
-
-
-    <div class="container">
-      <h4>Please select a quiz pack: </h4>
-    <form method="POST" action="{% url 'quizzes:quizGame' %}">
-      {% csrf_token %} {% for pack in question_packs %}
-
-      <button
-        id="ComputerScience"
-        name="packName"
-        value="{{ pack.pack_name}}"
-        type="submit"
-        onclick="console.log(this.value)"
-      >
-        {{ pack.pack_name }}
-      </button>
-      {% endfor %}
-    </form>
-    {% else %}
-    <p>No question packs found.</p>
-    {% endif %}
+    <h3>Hello {{ teacher }}</h3>
+    
   </div>
+  <div class="container">
+    <h4>Please select a flashcard pack:</h4>
+    <!--displaying the different packs-->
+        {% if packs %}
+
+        <form method="POST" action="{% url 'teacher:deleteFlashcardList' %}">
+          {% csrf_token %} {% for pack in packs %}
+    
+          <button
+            id="{{ pack.subject }}"
+            name="packName"
+            value="{{ pack.pack_name}}"
+            type="submit"
+            onclick="console.log(this.value)"
+          >
+            {{ pack.pack_name }}
+          </button>
+          {% endfor %}
+        </form>
+        {% else %}
+        <p>No flashcard packs found.</p>
+        {% endif %}
+      </div>
   </body>
 </html>

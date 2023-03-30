@@ -3,8 +3,11 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.urls import reverse
 # importing the models from the quizzes app
 from quizzes.models import *
+# importing the form
+from .forms import QuestionForm
 
 # Create your views here.
 
@@ -43,13 +46,35 @@ def createQuestionPack(request):
             messages.success(
                 request, "New question pack called {pack_name} has just been created.")
             return render(request, 'teacher/index.html')
-        else:
-            return render(request, 'teacher/newPack.html', context)
+        # else:
+            form = QuestionForm()
+            return render(request, 'teacher/index.html', {'form': form})
+        # else:
+     #   return redirect('home')
         return render(request, 'teacher/newPack.html', context)
     else:
         messages.error(
             request, "You do not have permission to view this page!")
         return redirect('home')
+
+# Creating 2 view functions to delete question packs:
+# the first function will just display all of the records in
+# QuestionPack model in the form of a table:
+
+
+def questionPackList(request):
+    question_packs = QuestionPack.objects.all()
+    context = {'question_packs': question_packs}
+    return render(request, 'teacher/questionPackList.html', context)
+
+# Creating the 2nd view function that deletes the selected question packs:
+
+
+def deleteQuestionPacks(request):
+    if request.method == 'POST':
+        question_pack_ids = request.POST.getlist('question_packs')
+        QuestionPack.objects.filter(id__in=question_pack_ids).delete()
+    return redirect('teacher:questionPackList')
 
 
 def addQuestions(request):
@@ -88,13 +113,75 @@ def addQuestions(request):
             new_question.save()  # saving the new object to Question model
             messages.success(
                 request, "New question has just been has just been created.")
-            return render(request, 'teacher/index.html')
+            return redirect('teacher:index')
         else:
             return render(request, 'teacher/newQuestions.html', context)
         return render(request, 'teacher/newQuestions.html', context)
     else:
         messages.error(
             request, "You do not have permission to view this page!")
+        return redirect('home')
+
+
+def deleteQuestionsPackDisplay(request):
+    if request.user.is_superuser:
+        teacher = request.user.username
+        packs = QuestionPack.objects.all()  # get all subjects from database
+        context = {
+            'teacher': teacher,
+            'packs': packs
+        }
+        return render(request, 'teacher/deleteQuestionsPackDisplay.html', context)
+    else:
+        messages.error(
+            request, "You do not have permission to view this page!")
+        return redirect('home')
+
+
+def deleteQuestionsList(request):
+    # print('Hello World!')
+    if request.user.is_authenticated:
+
+        if request.method == "POST":
+            # Determining the flashcard pack chosen by the user
+            pack = request.POST.get("packName")
+            question_pack = QuestionPack.objects.get(
+                pack_name=pack)
+            questions = Question.objects.filter(pack=question_pack)
+
+            # for debugging purposes
+            # print("The selected subject is: ", question_pack)
+
+            # code for rendering the flashcards on the
+            context = {
+                'questions': questions,
+            }
+            return render(request, "teacher/deleteQuestions.html", context)
+        else:
+            return redirect('home')
+
+    else:
+        messages.error(
+            request, "You need to login!")
+        # "return redirect('home')" redirects the user to the home route defined in the urls.py file of the main app called Revision_web_app
+        return redirect('home')
+
+
+def deleteQuestionExecution(request):
+    if request.method == 'POST':
+        question_ids = request.POST.getlist('question')
+        Question.objects.filter(id__in=question_ids).delete()
+        teacher = request.user.username
+        packs = QuestionPack.objects.all()  # get all subjects from database
+        context = {
+            'teacher': teacher,
+            'packs': packs
+        }
+        return redirect('teacher:deleteQuestionsPackDisplay')
+    else:
+        messages.error(
+            request, "Problem with POST request!")
+        # "return redirect('home')" redirects the user to the home route defined in the urls.py file of the main app called Revision_web_app
         return redirect('home')
 
 
@@ -134,6 +221,65 @@ def addFlashCard(request):
     else:
         messages.error(
             request, "You do not have permission to view this page!")
+        return redirect('home')
+
+
+def deleteFlashcardPackDisplay(request):
+    if request.user.is_superuser:
+        teacher = request.user.username
+        packs = QuestionPack.objects.all()  # get all subjects from database
+        context = {
+            'teacher': teacher,
+            'packs': packs
+        }
+        return render(request, 'teacher/deleteFlashcardPackDisplay.html', context)
+    else:
+        messages.error(
+            request, "You do not have permission to view this page!")
+        return redirect('home')
+
+
+def deleteFlashcardList(request):
+    if request.user.is_authenticated:
+
+        if request.method == "POST":
+            # Determining the flashcard pack chosen by the user
+            pack = request.POST.get("packName")
+            flashcardPack = QuestionPack.objects.get(
+                pack_name=pack)
+            flashcards = Card.objects.filter(question_pack=flashcardPack)
+
+            # for debugging purposes
+            # print("The selected subject is: ", question_pack)
+
+            # code for rendering the flashcards on the
+            context = {
+                'flashcards': flashcards,
+            }
+            return render(request, "teacher/deleteFlashcard.html", context)
+
+    else:
+        messages.error(
+            request, "You need to login!")
+        # "return redirect('home')" redirects the user to the home route defined in the urls.py file of the main app called Revision_web_app
+        return redirect('home')
+
+
+def deleteFlashcardExecution(request):
+    if request.method == 'POST':
+        flashcard_ids = request.POST.getlist('flashcard')
+        Card.objects.filter(id__in=flashcard_ids).delete()
+        teacher = request.user.username
+        packs = Card.objects.all()  # get all subjects from database
+        context = {
+            'teacher': teacher,
+            'packs': packs
+        }
+        return redirect('teacher:deleteFlashcardPackDisplay')
+    else:
+        messages.error(
+            request, "Problem with POST request!")
+        # "return redirect('home')" redirects the user to the home route defined in the urls.py file of the main app called Revision_web_app
         return redirect('home')
 
 

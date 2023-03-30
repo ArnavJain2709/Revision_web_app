@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
@@ -25,6 +37,43 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .form-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px;
+      }
+      .form-group button {
+        display: inline-block;
+        padding: 8px 20px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+      
+      .form-group button:hover {
+        background-color: #0069d9;
+        transform: translateY(-3px);
+      }
+      
+      .form-group button:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+      }
+    
+    </style>
     <title>Document</title>
   </head>
   <body>
@@ -54,20 +103,32 @@
         });
       });
     </script>
-
-    <p>{{ test_message }}</p>
+    <!--Displaying errors in forms-->
+    {% if form.errors.correct_option %}
+      <div class="alert alert-danger">{{ form.errors.correct_option }}</div>
+    {% endif %}
+    
 
     <div>
-      <form action="{% url 'teacher:createQuestionPack' %}">
+      <form action="{% url 'teacher:createQuestionPack' %}" class="form-group">
         <button>Create a new question pack</button>
       </form>
-      <form action="{% url 'teacher:addQuestions' %}">
+      <form action="{% url 'teacher:questionPackList' %}" class="form-group">
+        <button>Delete question packs</button>
+      </form>
+      <form action="{% url 'teacher:addQuestions' %}" class="form-group">
         <button>Add questions to a new question pack</button>
       </form>
-      <form action="{% url 'teacher:addFlashCard' %}">
+      <form action="{% url 'teacher:deleteQuestionsPackDisplay' %}" class="form-group">
+        <button>Delete questions</button>
+      </form>
+      <form action="{% url 'teacher:addFlashCard' %}" class="form-group">
         <button>Create a new flashcard</button>
       </form>
-      <form action="{% url 'teacher:userDashboard' %}">
+      <form action="{% url 'teacher:deleteFlashcardPackDisplay' %}" class="form-group">
+        <button>Delete flashcards</button>
+      </form>
+      <form action="{% url 'teacher:userDashboard' %}" class="form-group">
         <button>Student dashboard</button>
       </form>
     </div>

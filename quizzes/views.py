@@ -7,6 +7,7 @@ from .models import *
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
+
 # Create your views here.
 
 
@@ -27,6 +28,7 @@ def index(request):
 
 
 # creating a view function for displaying questions packs
+
 def questionPackDisplay(request):
 
     if request.method == "POST":
