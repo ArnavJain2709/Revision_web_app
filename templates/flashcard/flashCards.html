@@ -74,11 +74,25 @@
         justify-content: center;
         align-items: center;
       }
+      .container {
+        padding: 20px; /* adds 20 pixels of padding on all sides of the div */
+      }
+      #logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #00CED1;
+    }
     </style>
     <title>Flash Cards</title>
   </head>
   <body>
-    <h1>This is the flashcards page!</h1>
+         <!--Logo-->
+  <div id="logo">CsPhEc</div>
+  <div class="container">
+    <h3>This is the flashcards page!</h3>
     <table>
       {% for card in flashcards %}
         {% if forloop.counter0|divisibleby:4 %}
@@ -101,5 +115,6 @@
         {% endif %}
       {% endfor %}
     </table>
+  </div>
   </body>
 </html>

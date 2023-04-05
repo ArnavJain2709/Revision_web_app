@@ -61,10 +61,25 @@
       .container button a {
         text-decoration: none;
       }
+      .container1 {
+        padding: 30px; /* adds 20 pixels of padding on all sides of the div */
+      }
+     
+      #logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #00CED1;
+    }
     </style>
     <title>Quiz Packs</title>
   </head>
   <body>
+         <!--Logo-->
+  <div id="logo">CsPhEc</div>
+  <div class="container1">
     
     {% if question_packs %}
 
@@ -93,5 +108,6 @@
     <p>No question packs found.</p>
     {% endif %}
   </div>
+</div>
   </body>
 </html>
