@@ -47,20 +47,15 @@
     <script src="{% static 'js/user_dashboard.js' %}"></script>
     
 
-    <title>Document</title>
+    <title>User Dashboard</title>
   </head>
   <body>
     <div class="row">
       <div class="col-3">
-        <h3>Users</h3>
+        <h3>Select a user to view their details</h3>
         <div class="list-group">
           {% for user in users %}
-          <a
-            href="#"
-            class="list-group-item list-group-item-action user-link"
-            data-username="{{ user.username }}"
-            >{{ user.username }}</a
-          >
+          <a href="{% url 'teacher:userDetail' user.username %}" class="list-group-item list-group-item-action user-link">{{ user.username }}</a>
           {% endfor %}
         </div>
       </div>

@@ -14,6 +14,7 @@ from .forms import QuestionForm
 
 def index(request):
     if request.user.is_superuser:
+        # for debug purposes, !--to be removed before deployment--!
         test_message = "You are an admin and this page is working!"
         return render(request, 'teacher/index.html', {'test_message': test_message})
     else:
@@ -177,7 +178,7 @@ def deleteQuestionExecution(request):
             'teacher': teacher,
             'packs': packs
         }
-        return redirect('teacher:deleteQuestionsPackDisplay')
+        return redirect('teacher:index')
     else:
         messages.error(
             request, "Problem with POST request!")
@@ -301,3 +302,26 @@ def userDashboard(request):
         }
 
     return render(request, 'teacher/userDashboard.html', context)
+
+
+def userDetail(request, username):
+    if not request.user.is_superuser:
+        messages.error(
+            request, "You do not have permission to view this page!")
+        return redirect('home')
+    user = User.objects.get(username=username)
+    user_performance = UserPerformance.objects.filter(user__username=username)
+    request = request  # for displaying the teacher/admin's name on the template
+    return render(request, 'teacher/userDetail.html', {'user': user, 'user_performance': user_performance, 'request': request})
+
+
+def userDelete(request, username):
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(username=username)
+            user.delete()
+            return JsonResponse({'message': 'User deleted successfully.'})
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found.'}, status=404)
+    else:
+        return JsonResponse({'error': 'Invalid request.'}, status=400)
