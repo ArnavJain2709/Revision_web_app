@@ -31,7 +31,7 @@ def home(request):
 
 def signup(request):
     if request.method == "POST":
-        #username = request.POST.get('username')
+        # username = request.POST.get('username')
         # type the 'name' of the value you want from the signup.html form
         username = request.POST['username']
         fname = request.POST['fname']
@@ -125,9 +125,10 @@ def signin(request):
             # a non None response if the user has enterred the right credentials
             # if the user's credentials are already in our database then we will login
             login(request, user)
-            fname = user.first_name  # defining fname
+            # fname = user.first_name  # defining fname
             # a dictionary (context) is also passed in the line below and it contains the firstname of the user
-            return render(request, "authentication/index.html", {'fname': fname})
+            # return render(request, "authentication/index.html", {'fname': fname})
+            return redirect('home')
 
         # what happens if the user's unsuccessful in login
         else:

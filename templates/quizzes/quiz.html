@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      .card-header {
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      .card-body {
+        background-color: #f8f9fa;
+      }
+
+      .form-check {
+        margin-bottom: 10px;
+      }
+
+      .btn-primary {
+        margin-top: 20px;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <form
+        method="post"
+        action="{% url 'quizzes:submit_quiz' question_pack_id %}"
+      >
+        {% csrf_token %} {% for question in questions %}
+        <div class="card my-4">
+          <div class="card-header">
+            <h2 class="card-title">{{ question.question_text }}</h2>
+          </div>
+          <div class="card-body">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question{{ question.id }}"
+                id="question{{ question.id }}-option1"
+                value="1"
+              />
+              <label
+                class="form-check-label"
+                for="question{{ question.id }}-option1"
+              >
+                {{ question.option_1 }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question{{ question.id }}"
+                id="question{{ question.id }}-option2"
+                value="2"
+              />
+              <label
+                class="form-check-label"
+                for="question{{ question.id }}-option2"
+              >
+                {{ question.option_2 }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question{{ question.id }}"
+                id="question{{ question.id }}-option3"
+                value="3"
+              />
+              <label
+                class="form-check-label"
+                for="question{{ question.id }}-option3"
+              >
+                {{ question.option_3 }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="question{{ question.id }}"
+                id="question{{ question.id }}-option4"
+                value="4"
+              />
+              <label
+                class="form-check-label"
+                for="question{{ question.id }}-option4"
+              >
+                {{ question.option_4 }}
+              </label>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>

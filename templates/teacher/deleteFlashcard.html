@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+      }
+      h2 {
+          color: #333;
+          font-size: 24px;
+      }
+      table {
+          border-collapse: collapse;
+          width: 100%;
+          margin-top: 20px;
+      }
+      th, td {
+          text-align: left;
+          padding: 8px;
+          border-bottom: 1px solid #ddd;
+      }
+      th {
+          background-color: #4CAF50;
+          color: white;
+      }
+      td {
+          background-color: #f2f2f2;
+      }
+      input[type=checkbox] {
+          margin-right: 10px;
+      }
+      button[type=submit] {
+          margin-top: 20px;
+          background-color: #4CAF50;
+          color: white;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+      button[type=submit]:hover {
+          background-color: #45a049;
+      }
+      
+  </style>
+    <title>Flashcard List</title>
+</head>
+<body>
+    <h2>Please the select the flashcards you want to delete:</h2>
+    <form method="post" action="{% url 'teacher:deleteFlashcardExecution' %}">
+      {% csrf_token %}
+      <table>
+        <thead>
+          <tr>
+            <th>Selected</th>
+            <th>Pack</th>
+            <th>Prompt</th>
+            <th>Content</th>
+            <th>Subject</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for flashcard in flashcards %}
+          <tr>
+            <td>
+              <input
+                type="checkbox"
+                name="flashcard"
+                value="{{ flashcard.id }}"
+              />
+            </td>
+            <td>{{ flashcard.question_pack }}</td>
+            <td>{{ flashcard.prompts }}</td>
+            <td>{{ flashcard.content|slice:":100" }}</td>
+            <td>{{ flashcard.subject }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button type="submit">Delete selected flashcards</button>
+    </form>
+</body>
+</html>

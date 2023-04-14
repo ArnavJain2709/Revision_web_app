@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <title>Quizzes</title>
+
+    <style>
+      body {
+        background-color: #17233d;
+      }
+
+      #welcomeSection {
+        background-color: #333333;
+        padding: 20px; /* Add 20 pixels of padding on all sides of the div */
+        border-radius: 10px; /* Add a 10 pixel border radius to the div */
+      }
+
+      #welcomeSection h3,
+      #welcomeSection h4 {
+        color: white;
+        margin: 0; /* Remove any margin that may be added by default */
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: row;
+      }
+      h4{
+        color: white;
+      }
+
+      .container button {
+        margin: 10px;
+        background-color: #5ce1e6;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #7ed957;
+      }
+
+      .container button a {
+        text-decoration: none;
+      }
+      .container1 {
+        padding: 30px; /* adds 20 pixels of padding on all sides of the div */
+      }
+      #logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #00CED1;
+    }
+    </style>
+  </head>
+  <body>
+     <!--Logo-->
+  <div id="logo">CsPhEc</div>
+  <div class="container1">
+    <div id="welcomeSection">
+      <h3>Hello {{ username }}</h3>
+      <!--Passing in the first name of user using the key from the dictionary in the signin view function-->
+      <h4>This is the quiz section.</h4>
+    </div>
+    <div class="container">
+      <h4>Please select a quiz subject: </h4>
+      <form method="POST" action="{% url 'quizzes:questionPackDisplay' %}">
+        {% csrf_token %} {% for subject in subjects %}
+        <button
+          id="{{ subject.subject_name }}"
+          name="subject"
+          value="{{ subject.subject_name }}"
+          type="submit"
+          onclick="console.log(this.value)"
+        >
+          {{ subject.subject_name }}
+        </button>
+        {% endfor %}
+      </form>
+    </div>
+  </div>
+  </body>
+</html>

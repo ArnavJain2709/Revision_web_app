@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equip= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      body {
+        background-color: #17233d;
+      }
+
+      #welcomeSection {
+        background-color: #333333;
+        padding: 20px; /* Add 20 pixels of padding on all sides of the div */
+        border-radius: 10px; /* Add a 10 pixel border radius to the div */
+      }
+
+      #welcomeSection h3,
+      #welcomeSection h4 {
+        color: white;
+        margin: 0; /* Remove any margin that may be added by default */
+      }
+      h3{
+        color: white;
+      }
+      h4{
+        color: white;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: row;
+      }
+
+      .container button {
+        margin: 10px;
+        background-color: #5ce1e6;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #7ed957;
+      }
+
+      .container button a {
+        text-decoration: none;
+      }
+    </style>
+    <title>Delete Flashcard</title>
+  </head>
+  <body>
+    <div id="welcomeSection">
+    <h3>Hello {{ teacher }}</h3>
+    
+  </div>
+  <div class="container">
+    <h4>Please select a flashcard pack:</h4>
+    <!--displaying the different packs-->
+        {% if packs %}
+
+        <form method="POST" action="{% url 'teacher:deleteFlashcardList' %}">
+          {% csrf_token %} {% for pack in packs %}
+    
+          <button
+            id="{{ pack.subject }}"
+            name="packName"
+            value="{{ pack.pack_name}}"
+            type="submit"
+            onclick="console.log(this.value)"
+          >
+            {{ pack.pack_name }}
+          </button>
+          {% endfor %}
+        </form>
+        {% else %}
+        <p>No flashcard packs found.</p>
+        {% endif %}
+      </div>
+  </body>
+</html>

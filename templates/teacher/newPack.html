@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      /* Adding some basic styling to the page */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 28px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      textarea,
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+    <!--Function for validating empty form submission: -->
+    <script>
+      function validateForm() {
+        var pack_name = document.getElementById("pack_name").value;
+        var pack_description = document.getElementById("pack_description").value;
+        var subject = document.getElementById("subject").value;
+        
+      
+        if (pack_name == "" || pack_description == "" || subject == "" ) {
+          alert("Please fill in all required fields.");
+          event.preventDefault(); // Stop form from submitting
+          return false;
+        }
+      }
+    </script>
+    <title>New Question Packs</title>
+  </head>
+  <body>
+    <h1>Hello {{ teacher }}</h1>
+    <h1>This is where the admin can create new question packs</h1>
+
+    <!--Creating a form for the admin / teacher to fill in the details of the new question pack-->
+    <form method="post" novalidate id = "myForm">
+      {% csrf_token %}
+      <label for="pack_name">Pack Name:</label><br />
+      <input type="text" id="pack_name" name="pack_name" /><br />
+      <label for="pack_description">Pack Description:</label><br />
+      <textarea id="pack_description" name="pack_description"></textarea><br />
+      <label for="subject">Subject:</label><br />
+      <select id="subject" name="subject">
+        {% for subject in subjects %}
+        <option value="{{ subject.pk }}">{{ subject.subject_name }}</option>
+        {% endfor %}
+      </select>
+      <br />
+      <br />
+      <input type="submit" value="Create Pack" onclick="validateForm()"/>
+    </form>
+    <!--This form includes fields for pack_name, pack_description, and subject. The
+    subject field is a select box that contains all the QuizSubject objects.
+    When the user submits the form, the data is sent as a POST request to the
+    createQuestionPack view function.-->
+  </body>
+</html>

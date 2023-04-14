@@ -4,9 +4,90 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+        //disable caching on the back button
+        window.onpageshow = function(event){
+          if (event.persisted){
+            window.location.reload();
+          }
+        };
+      </script>
+      <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0F0F0;
+        }
+        #logo {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          font-size: 24px;
+          font-weight: bold;
+          color: #00CED1;
+      }
+        h3 {
+          text-align: center;
+        }
+        form {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+            padding: 20px;
+            width: 400px;
+            margin: auto;
+            margin-top: 50px;
+            animation: formFadeIn 1s ease-in-out;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            border: none;
+            border-bottom: 1px solid #CCCCCC;
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            border: none;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        button[type="submit"]:hover {
+            background-color: #3E8E41;
+        }
+        .alert {
+            background-color: #F44336;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            animation: alertFadeIn 1s ease-in-out;
+        }
+        .alert-success {
+            background-color: #4CAF50;
+        }
+        @keyframes formFadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        @keyframes alertFadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
     <title>Signup</title>
 </head>
 <body>
+  <!--Logo-->
+  <div id="logo">CsPhEc</div>
 
     {% for message in messages %}
     <div class = "alert alert-{{ message.tags }} alert-dismissible fade show" role = "alert">

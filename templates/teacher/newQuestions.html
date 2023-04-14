@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--Code for preventing confirm resubmission errors, these occur when the user presses the back button-->
+    <meta http-equiv= "Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script type="text/javascript">
+      //disable caching on the back button
+      window.onpageshow = function(event){
+        if (event.persisted){
+          window.location.reload();
+        }
+      };
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-top: 40px;
+      }
+      form {
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      textarea,
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+      select {
+        height: 40px;
+      }
+      input[type="number"] {
+        width: 60px;
+      }
+      input[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+    <!--Function for validating empty form submission: -->
+    <script>
+      function validateForm() {
+        var question_text = document.getElementById("question_text").value;
+        var option_1 = document.getElementById("option_1").value;
+        var option_2 = document.getElementById("option_2").value;
+        var option_3 = document.getElementById("option_3").value;
+        var option_4 = document.getElementById("option_4").value;
+        var correct_option = document.getElementById("correct_option").value;
+      
+        if (question_text == "" || option_1 == "" || option_2 == "" || option_3 == "" || option_4 == "" || correct_option == "") {
+          alert("Please fill in all required fields.");
+          event.preventDefault(); // Stop form from submitting
+          return false;
+        }
+      }
+    </script>
+    <title>New Question</title>
+  </head>
+  <body>
+    <h1>Hello {{ teacher }}</h1>
+    <h1>This is where the admin can create a new question</h1>
+
+    <!--Creating a form for the admin / teacher to fill in the details of the new question-->
+    <form method="post" novalidate id = "myForm">
+      {% csrf_token %}
+      <label for="question_text">Question Text:</label><br />
+      <textarea id="question_text" name="question_text" required></textarea><br />
+      <label for="pack">Pack:</label><br />
+      <select id="pack" name="pack">
+        {% for pack in packs %}
+        <option value="{{ pack.pk }}">{{ pack.pack_name }}</option>
+        {% endfor %}</select
+      ><br />
+      <label for="option_1">Option 1:</label><br />
+      <input type="text" id="option_1" name="option_1"  required/><br />
+      <label for="option_2">Option 2:</label><br />
+      <input type="text" id="option_2" name="option_2"  required/><br />
+      <label for="option_3">Option 3:</label><br />
+      <input type="text" id="option_3" name="option_3"  required/><br />
+      <label for="option_4">Option 4:</label><br />
+      <input type="text" id="option_4" name="option_4"  required/><br />
+      <label for="correct_option">Correct Option:</label><br />
+      <input
+        type="number"
+        id="correct_option"
+        name="correct_option"
+        min="1"
+        max="4" 
+        required
+      /><br />
+      <br />
+      <input type="submit" value="Create Question" onclick="validateForm()"/>
+    </form>
+    <!--This form includes fields for question_text, pack, option_1, option_2,
+    option_3, option_4, and correct_option. The pack field is a select box that
+    contains all the QuestionPack objects. When the user submits the form, the
+    data is sent as a POST request to the createQuestion view function.-->
+  </body>
+</html>
