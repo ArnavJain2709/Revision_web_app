@@ -1,1 +1,1 @@
-web: gunicorn Revision_web_app.wsgi
+web: gunicorn Revision_web_app.wsgi --log-file -
