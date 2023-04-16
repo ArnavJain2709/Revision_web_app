@@ -109,18 +109,33 @@
     <button id="quizzes" type="submit">
       <a href="/quizzes">Quizzes</a>
     </button>
-    <button id="signout" type="submit"><a href="/signout"> SignOut </a></button>
-    <!--The user is only shown the SignOut button if they are logged in!-->
+     <!--Creating a button that will take the user to the flashcards app-->
+     <button id="flashcard" type="submit">
+      <a href="/flashcard">Flashcards</a>
+    </button>
 
     <!--The button below will take admin users / teachers to another template where they can view statistics of a user / student-->
     <button id="teacher" type="submit">
       <a href="/teacher">For Teachers</a>
     </button>
 
-    <!--Creating a button that will take the user to the flashcards app-->
-    <button id="flashcard" type="submit">
-      <a href="/flashcard">Flashcards</a>
+    <!-- Check if user is superuser, if the user is a superuser then this button should redirect the user to the django admin site-->
+    {% if user.is_superuser %}
+    <button id = "toDjangoAdmin" type = "submit">
+      <a href="/toDjangoAdmin">Site Admin</a>
     </button>
+    {% endif %}
+
+
+    <button id="signout" type="submit"><a href="/signout"> SignOut </a></button>
+    <!--The user is only shown the SignOut button if they are logged in!-->
+
+    
+ 
+
+
+
+   
 
     <!--else case (when the user is not authenticated): show the SignUp and SignIn button to the user-->
     {% else %}

@@ -28,6 +28,12 @@ from .tokens import generate_token
 def home(request):
     return render(request, "authentication/index.html")
 
+# creating a view function that redirects the user to the Django admin site
+
+
+def toDjangoAdmin(request):
+    return redirect('admin:index')
+
 
 def signup(request):
     if request.method == "POST":
