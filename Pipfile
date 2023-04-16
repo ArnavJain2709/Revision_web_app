@@ -7,6 +7,7 @@ name = "pypi"
 django = "*"
 six = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 autopep8 = "*"
