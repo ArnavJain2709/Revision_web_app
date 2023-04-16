@@ -32,7 +32,7 @@ EMAIL_PORT = EMAIL_PORT
 SECRET_KEY = 'django-insecure-+y8*on(l!x+tyq8=eku4s^nm3jg4ad9gr%&23g+yg6bd5#+2qc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['radiant-everglades-13126.herokuapp.com', '127.0.0.1']
 
