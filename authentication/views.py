@@ -122,23 +122,21 @@ def signin(request):
     if request.method == "POST":
         username = request.POST['username']
         pass1 = request.POST['pass1']
-
+        # print(username, pass1) for ebugging purposes
         # authenticating this user
 
         user = authenticate(username=username, password=pass1)
 
-        if user is not None:  # this will return a None response if the user is not authenticated and
+        # this will return a None response if the user is not authenticated and
+        if user is not None:
             # a non None response if the user has enterred the right credentials
             # if the user's credentials are already in our database then we will login
             login(request, user)
-            # fname = user.first_name  # defining fname
-            # a dictionary (context) is also passed in the line below and it contains the firstname of the user
-            # return render(request, "authentication/index.html", {'fname': fname})
             return redirect('home')
 
-        # what happens if the user's unsuccessful in login
         else:
-            messages.error(request, "Bad credentials!")
+            messages.error(
+                request, "Invalid username or password! Ensure that you have activated your account!")
             return redirect('home')
 
     return render(request, "authentication/signin.html")
