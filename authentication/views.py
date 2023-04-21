@@ -125,19 +125,27 @@ def signin(request):
         # print(username, pass1) for ebugging purposes
         # authenticating this user
 
-        user = authenticate(username=username, password=pass1)
-
-        # this will return a None response if the user is not authenticated and
-        if user is not None:
-            # a non None response if the user has enterred the right credentials
-            # if the user's credentials are already in our database then we will login
-            login(request, user)
-            return redirect('home')
-
-        else:
+        # creating another user object for checking if the user account is active:
+        user2 = User.objects.get(username=username)
+        if not user2.is_active:
+            print('user account is not active!')
             messages.error(
-                request, "Invalid username or password! Ensure that you have activated your account!")
+                request, "Please activate your account from the link sent your email!")
             return redirect('home')
+        else:
+            user = authenticate(username=username, password=pass1)
+
+            # this will return a None response if the user is not authenticated and
+            if user is not None:
+                # a non None response if the user has enterred the right credentials
+                # if the user's credentials are already in our database then we will login
+                login(request, user)
+                return redirect('home')
+
+            else:
+                messages.error(
+                    request, "Invalid username or password! Ensure that you have activated your account!")
+                return redirect('home')
 
     return render(request, "authentication/signin.html")
 
