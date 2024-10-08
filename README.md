@@ -1,0 +1,1 @@
+This is a personal project. It uses Django and SQlite. A revision website that has quizzes, flashcards, revision notes on different subjects. A custom admin site is also included in this project alongside the built in Django admin site to allow teachers to make quiizzes, add more resources and also view performance data on a graph.
